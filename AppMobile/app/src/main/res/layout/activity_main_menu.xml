@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:padding="8dp"
+    android:background="@android:color/holo_orange_dark"
+    tools:ignore="ExtraText">
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        android:scrollbars="vertical"
+        android:layout_marginBottom="100dp"/>
+
+    <ImageButton
+        android:id="@+id/button_insert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/ic_add"
+        android:background="@android:color/transparent"/>
+
+    <include
+        layout="@layout/add_capteur"
+        android:visibility="gone"/>
+    <include
+        layout="@layout/add_capteur_info"
+        android:visibility="gone"/>
+
+    <ImageButton
+        android:id="@+id/button_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/ic_cancel"
+        android:background="@android:color/transparent"
+        android:visibility="gone"/>
+
+</RelativeLayout>
+
