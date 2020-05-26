@@ -46,7 +46,9 @@ import java.util.Map;
 
 import okhttp3.OkHttpClient;
 
-public class main_menu extends AppCompatActivity {
+public class main_menu extends AppCompatActivity implements ExempleAdapter.OnItemClickListener {
+
+    public static final String NumSerieCapteur = "Text2";
 
     private ArrayList<ExempleItem> mExempleList;
 
@@ -79,9 +81,7 @@ public class main_menu extends AppCompatActivity {
         mRequestQueue = Volley.newRequestQueue(this);
         parseJSON();
 
-        //loadList(); //charger la liste de capteurs qui est stocké dans la bdd
-
-        //buildRecyclerView();
+        //setButtons();
         
         buttonInsert = findViewById(R.id.button_insert);
         buttonCancel = findViewById(R.id.button_cancel);
@@ -108,6 +108,7 @@ public class main_menu extends AppCompatActivity {
                 addCapteurList.setVisibility(View.VISIBLE);
                 buttonCancel.setVisibility(View.VISIBLE);
                 buttonInsert.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.GONE);
 
             }
         });
@@ -118,6 +119,7 @@ public class main_menu extends AppCompatActivity {
                 buttonCancel.setVisibility(View.GONE);
                 buttonInsert.setVisibility(View.VISIBLE);
                 addCapteurInfo.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.VISIBLE);
 
             }
         });
@@ -187,40 +189,44 @@ public class main_menu extends AppCompatActivity {
                 {
                     if (i[0] == 0)
                     {
-                        final String type = "Porte";
+                        final String type = "0";
                         addCapteurBDD(ValnomCapteur, ValnumCapteur, type);
                     }
 
                     if (i[0] == 1)
                     {
-                        final String type = "Temperature";
+                        final String type = "1";
                         addCapteurBDD(ValnomCapteur, ValnumCapteur, type);
                     }
 
                     if (i[0] == 2)
                     {
-                        final String type = "Humidite";
+                        final String type = "2";
                         addCapteurBDD(ValnomCapteur, ValnumCapteur, type);
                     }
 
                     if (i[0] == 3)
                     {
-                        final String type = "Presence";
+                        final String type = "3";
                         addCapteurBDD(ValnomCapteur, ValnumCapteur, type);
                     }
 
                     if (i[0] == 4)
                     {
-                        final String type = "Lumiere";
+                        final String type = "4";
                         addCapteurBDD(ValnomCapteur, ValnumCapteur, type);
                     }
 
-                    insertItem(ValnomCapteur, ValnumCapteur, i[0]);
+                    finish();
+                    overridePendingTransition(0, 0);
+                    startActivity(getIntent());
+                    overridePendingTransition(0, 0);
                     closeKeyboard();
                     addCapteurList.setVisibility(View.GONE);
                     buttonCancel.setVisibility(View.GONE);
                     buttonInsert.setVisibility(View.VISIBLE);
                     addCapteurInfo.setVisibility(View.GONE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -233,8 +239,8 @@ public class main_menu extends AppCompatActivity {
         progressDialog.setIndeterminate(false);
         progressDialog.setTitle("Add sensor in database");
         progressDialog.show();
-        String uRl ="http://10.0.2.2//AppMobile/addCapteur.php";
-        StringRequest request = new StringRequest(Request.Method.POST, uRl, new Response.Listener<String>()
+        String url ="https://nimble-lead-277612.ew.r.appspot.com/?id=4&numSerie="+ numserie +"&nomCapteur="+ captername +"&typeCapteur=" + i;
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
         {
             @Override
             public void onResponse(String response)
@@ -242,7 +248,6 @@ public class main_menu extends AppCompatActivity {
                 if (response.equals("Successfully added"))
                 {
                     progressDialog.dismiss();
-                    //finish();
                 }
                 else
                 {
@@ -272,26 +277,33 @@ public class main_menu extends AppCompatActivity {
         MySingleton.getmInstance(main_menu.this).addToRequestQueue(request);
     }
 
-    private void parseJSON()
-    {
+    private void parseJSON() {
         String url = "https://nimble-lead-277612.ew.r.appspot.com/?id=3";
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONArray>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(JSONObject response) {
                         try {
-                            JSONArray jsonArray = new JSONArray(response);
+                            JSONArray jsonArray = response.getJSONArray("Liste");
                             for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject sensor = jsonArray.getJSONObject(i);
-
-                                String type = sensor.getString("typeCapteur");
-                                String numserie = sensor.getString("numSerie");
-                                String captername = sensor.getString("nomCapteur");
-
-                                mExempleList.add(0, new ExempleItem(R.drawable.ic_door, captername, numserie));
+                                JSONObject hit = jsonArray.getJSONObject(i);
+                                String Text1 = hit.getString("nomCapteur");
+                                String Text2 = hit.getString("numSerie");
+                                int icon = hit.getInt("typeCapteur");
+                                if (icon == 0)
+                                    mExempleList.add(0, new ExempleItem(R.drawable.ic_door, Text1, Text2));
+                                if (icon == 1)
+                                    mExempleList.add(0, new ExempleItem(R.drawable.ic_tmp, Text1, Text2));
+                                if (icon == 2)
+                                    mExempleList.add(0, new ExempleItem(R.drawable.ic_humidity, Text1, Text2));
+                                if (icon == 3)
+                                    mExempleList.add(0, new ExempleItem(R.drawable.ic_motion_sensor, Text1, Text2));
+                                if (icon == 4)
+                                    mExempleList.add(0, new ExempleItem(R.drawable.ic_lumiere, Text1, Text2));
                             }
                             mAdapter = new ExempleAdapter(main_menu.this, mExempleList);
                             mRecyclerView.setAdapter(mAdapter);
+                            mAdapter.setOnItemClickListener(main_menu.this);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -306,103 +318,7 @@ public class main_menu extends AppCompatActivity {
     }
 
 
-    private void loadList()
-    {
-
-
-        String url ="https://nimble-lead-277612.ew.r.appspot.com/?id=3";
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                try {
-                    JSONArray products = new JSONArray(response);
-
-                    for (int i = 0; i < products.length(); i++)
-                    {
-                        JSONObject productObject = products.getJSONObject(i);
-
-                        String type = productObject.getString("typeCapteur");
-                        String numserie = productObject.getString("numSerie");
-                        String captername = productObject.getString("nomCapteur");
-
-                        if (type == "Porte" )
-                        {
-                            mExempleList.add(0, new ExempleItem(R.drawable.ic_door, captername, numserie));
-                        }
-
-                        if (type == "Temperature")
-                        {
-                            mExempleList.add(0, new ExempleItem(R.drawable.ic_tmp, captername, numserie));
-                        }
-
-                        if (type == "Humidite")
-                        {
-                            mExempleList.add(0, new ExempleItem(R.drawable.ic_humidity, captername, numserie));
-                        }
-
-                        if (type == "Presence")
-                        {
-                            mExempleList.add(0, new ExempleItem(R.drawable.ic_motion_sensor, captername, numserie));
-                        }
-
-                        if (type == "Lumiere")
-                        {
-                            mExempleList.add(0, new ExempleItem(R.drawable.ic_lumiere, captername, numserie));
-                        }
-
-                        //ExempleAdapter adapter = new ExempleAdapter(mExempleList);
-                        //mRecyclerView.setAdapter(adapter);
-
-                        //mAdapter.notifyItemInserted(0);
-
-                    }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(main_menu.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        Volley.newRequestQueue(this).add(stringRequest);
-    }
-
-    public void insertItem(String ValnomCapteur, String ValnumCapteur, int i) {
-        if (i == 0 )
-        {
-            mExempleList.add(0, new ExempleItem(R.drawable.ic_door, ValnomCapteur, ValnumCapteur));
-        }
-
-        if (i == 1)
-        {
-            mExempleList.add(0, new ExempleItem(R.drawable.ic_tmp, ValnomCapteur, ValnumCapteur));
-        }
-
-        if (i == 2)
-        {
-            mExempleList.add(0, new ExempleItem(R.drawable.ic_humidity, ValnomCapteur, ValnumCapteur));
-        }
-
-        if (i == 3)
-        {
-            mExempleList.add(0, new ExempleItem(R.drawable.ic_motion_sensor, ValnomCapteur, ValnumCapteur));
-        }
-
-        if (i == 4){
-            mExempleList.add(0, new ExempleItem(R.drawable.ic_lumiere, ValnomCapteur, ValnumCapteur));
-        }
-
-        mAdapter.notifyItemInserted(0);
-    }
-
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+    /*ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
@@ -433,39 +349,16 @@ public class main_menu extends AppCompatActivity {
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
         }
-    };
-
-    public void createExempleList() {
-        mExempleList = new ArrayList<>();
-        /*mExempleList.add(new ExempleItem(R.drawable.ic_android, "Line 1", "Line 2"));
-        mExempleList.add(new ExempleItem(R.drawable.ic_audio, "Line 3", "Line 4"));
-        mExempleList.add(new ExempleItem(R.drawable.ic_sun, "Line 5", "Line 6"));*/
-    }
-
-    public void buildRecyclerView() {
-        //mRecyclerView = findViewById(R.id.recycle_view);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        //mAdapter = new ExempleAdapter(mExempleList);
-
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
-
-        new ItemTouchHelper(simpleCallback).attachToRecyclerView(mRecyclerView);
-
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
-
-        mAdapter.setOnItemClickListener(new ExempleAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                OpenCapteurActivity();
-            }
-        });
-    }
+    };*/
 
     public void OpenCapteurActivity(){
         Intent intent = new Intent(this, Capteur.class);
         startActivity(intent);
+    }
+
+    public void removeItem(int position) {
+        mExempleList.remove(position);
+        mAdapter.notifyItemRemoved(position);
     }
 
     private void closeKeyboard() {
@@ -475,4 +368,57 @@ public class main_menu extends AppCompatActivity {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
+    @Override
+    public void onItemClick(int position) {
+        Intent detailIntent = new Intent(this, Capteur.class);
+        ExempleItem clickItem = mExempleList.get(position);
+
+        detailIntent.putExtra(NumSerieCapteur, clickItem.getText2());
+        startActivity(detailIntent);
+    }
+
+    /*@Override
+    public void onDeleteClick(int position) {
+        removeItem(position);
+        final ProgressDialog progressDialog = new ProgressDialog(main_menu.this);
+        progressDialog.setCancelable(false);
+        progressDialog.setIndeterminate(false);
+        progressDialog.setTitle("Deleting sensor from database");
+        progressDialog.show();
+        String url ="https://nimble-lead-277612.ew.r.appspot.com/?id=6&numSerie="+ NumSerieCapteur;
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                if (response.equals("Successfully added"))
+                {
+                    progressDialog.dismiss();
+                }
+                else
+                {
+                    progressDialog.dismiss();
+                    Toast.makeText(main_menu.this, response, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                progressDialog.dismiss();
+                Toast.makeText(main_menu.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> param = new HashMap<>();
+                param.put("captername", NumSerieCapteur);
+                return param;
+            }
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(30000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        MySingleton.getmInstance(main_menu.this).addToRequestQueue(request);
+    }*/
 }

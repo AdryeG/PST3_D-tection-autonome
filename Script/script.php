@@ -49,7 +49,7 @@ if ($id == 1)
 
   $trimemail = trim($email, '"'); //Permet de supprimer les "" qui encadre notre variable
 
-  if ($req = $connect->query("SELECT * FROM users WHERE email LIKE '".$trimemail."'"))
+  if ($req = $connect->query("SELECT * FROM users WHERE email = '".$trimemail."'"))
   {
     //printf("Compte similaire trouvé : %d", $req->num_rows); // Permet de voir le résultat de la requête
     if ($req->num_rows == 0)
@@ -74,11 +74,11 @@ if ($id == 2)
   $email = $_GET['email'];
   $password = $_GET['password'];
 
-  $req = $connect->query("SELECT * FROM users WHERE email LIKE '".$email."'");
+  $req = $connect->query("SELECT * FROM users WHERE email = '".$email."'");
 
   if($req->num_rows > 0)
   {
-    $reqLogin = $connect->query("SELECT * FROM users WHERE email LIKE '".$email."' AND password LIKE '".$password."'");
+    $reqLogin = $connect->query("SELECT * FROM users WHERE email = '".$email."' AND password = '".$password."'");
 
     if($reqLogin->num_rows > 0)
     {
@@ -112,7 +112,67 @@ if ($id == 3)
   {
     $json_array[] = $row;
   }
-
+  echo '{"Liste":';
   echo json_encode($json_array);
+  echo "}";
+}
+/*Ajouter un capteur dans la base de données*/
+if ($id == 4)
+{
+
+  $add = '"';
+  $numSerie = $_GET['numSerie'];
+  $nomCapteur = $add.$_GET['nomCapteur'].$add;
+  $typeCapteur = $_GET['typeCapteur'];
+
+  $req = $connect->query("SELECT * FROM capteur_list WHERE numSerie = '".$numSerie."'");
+
+  if($req->num_rows == 0)
+  {
+    $sql_register = $connect->prepare("INSERT INTO capteur_list(nomCapteur, numSerie, typeCapteur) VALUES(".$nomCapteur.", ".$numSerie.", ".$typeCapteur.")");
+    $sql_register->execute();
+    echo "Successfully added";
+  }
+  else
+  {
+    echo "Numserie already used !";
+  }
+}
+/*Fetch data list*/
+if ($id == 5)
+{
+
+  $numSerie = $_GET['numSerie'];
+
+  $req = "SELECT time FROM capteur_info WHERE numSerie = '".$numSerie."'";
+
+  $result = mysqli_query($connect, $req);
+
+  $json_array = array();
+
+  while ($row = mysqli_fetch_assoc($result))
+  {
+    $json_array[] = $row;
+  }
+  echo '{"Liste":';
+  echo json_encode($json_array);
+  echo "}";
+}
+if ($id == 6)
+{
+  $numSerie = $_GET['numSerie'];
+  $numSerie = trim($numSerie, '"');
+  $numSerie = trim($numSerie, "'");
+
+  $id = $connect->query("SELECT ID_list FROM capteur_list WHERE numSerie = '".$numSerie."'");
+
+  if($id->num_rows != 0)
+  {
+    $req = $connect->prepare("DELETE FROM capteur_list WHERE numSerie = '".$numSerie."' ");
+    $req->execute();
+    echo "Successfully deleted";
+  }
+  else
+    echo "Capteur deja supprime";
 }
 ?>

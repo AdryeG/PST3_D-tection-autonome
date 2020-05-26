@@ -11,11 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-
-public class ExempleAdapter extends RecyclerView.Adapter<ExempleAdapter.ExempleViewHolder> {
-    private ArrayList<ExempleItem> mExempleList;
+public class ExempleAdapter extends RecyclerView.Adapter<ExempleAdapter.ExampleViewHolder> {
     private Context mContext;
-
+    private ArrayList<ExempleItem> mExampleList;
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener{
@@ -26,12 +24,36 @@ public class ExempleAdapter extends RecyclerView.Adapter<ExempleAdapter.ExempleV
         mListener = listener;
     }
 
-    public static class ExempleViewHolder extends RecyclerView.ViewHolder {
+    public ExempleAdapter(Context context, ArrayList<ExempleItem> exampleList) {
+        mContext = context;
+        mExampleList = exampleList;
+    }
+    @Override
+    public ExampleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(mContext).inflate(R.layout.exemple, parent, false);
+        return new ExampleViewHolder(v);
+    }
+    @Override
+    public void onBindViewHolder(ExampleViewHolder holder, int position) {
+        ExempleItem currentItem = mExampleList.get(position);
+        String Text1 = currentItem.getText1();
+        String Text2 = currentItem.getText2();
+        int icon = currentItem.getImageResource();
+        holder.mTextView1.setText(Text1);
+        holder.mTextView2.setText(Text2);
+        holder.mImageView.setImageResource(currentItem.getImageResource());
+    }
+    @Override
+    public int getItemCount() {
+        return mExampleList.size();
+    }
+    public class ExampleViewHolder extends RecyclerView.ViewHolder {
         public ImageView mImageView;
         public TextView mTextView1;
         public TextView mTextView2;
+        public ImageView mDeleteImage;
 
-        public ExempleViewHolder(View itemView, final OnItemClickListener listener) {
+        public ExampleViewHolder(View itemView) {
             super(itemView);
             mImageView = itemView.findViewById(R.id.imageView);
             mTextView1 = itemView.findViewById(R.id.textView);
@@ -40,55 +62,14 @@ public class ExempleAdapter extends RecyclerView.Adapter<ExempleAdapter.ExempleV
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (listener != null){
+                    if (mListener != null){
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION){
-                            listener.onItemClick(position);
+                            mListener.onItemClick(position);
                         }
                     }
                 }
             });
-        }
-    }
-
-    public ExempleAdapter(Context context, ArrayList<ExempleItem> exempleList) {
-        mContext = context;
-        mExempleList = exempleList;
-    }
-
-    @Override
-    public ExempleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.exemple, parent, false);
-        return new ExempleViewHolder(v, mListener);
-    }
-
-    @Override
-    public void onBindViewHolder(ExempleViewHolder holder, int position) {
-        ExempleItem currentItem = mExempleList.get(position);
-
-        String Text1 = currentItem.getText1();
-        String Text2 = currentItem.getText2();
-        int Icon = currentItem.getImageResource();
-
-        holder.mTextView1.setText(Text1);
-        holder.mTextView2.setText(Text2);
-        holder.mImageView.setImageResource(currentItem.getImageResource());
-    }
-
-    @Override
-    public int getItemCount() {
-        return mExempleList.size();
-    }
-
-    public class ExampleViewHolder extends RecyclerView.ViewHolder {
-        public ImageView mImageView;
-        public TextView mTextView1;
-        public TextView mTextView2;
-        public ExampleViewHolder(View itemView) {
-            super(itemView);
-            mImageView = itemView.findViewById(R.id.imageView);
-            mTextView1 = itemView.findViewById(R.id.textView);
-            mTextView2 = itemView.findViewById(R.id.textView2);
         }
     }
 }

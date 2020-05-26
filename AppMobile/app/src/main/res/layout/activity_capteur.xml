@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Capteur">
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="c"
+        android:layout_height="wrap_content"
+        android:text="back"
         android:id="@+id/button"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        android:scrollbars="vertical"
+        android:layout_marginBottom="100dp"/>
+    <ImageButton
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/ic_delete"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/delete"
+        />
 
-</LinearLayout>
+</RelativeLayout>
