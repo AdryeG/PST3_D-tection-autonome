@@ -8,11 +8,11 @@ $password= "";
 
 $servername = null;
 $port = null;
-$dbname = 'capteurs';
+$dbname = 'NomDeLaBase';
 $dbuser = 'root';  
-$dbpass = '5qaJy6mHtxI70t1o'; 
-$dbhost = '35.187.127.17'; 
-$connect = new mysqli($servername, $dbuser, $dbpass, $dbname, $port, "/cloudsql/nimble-lead-277612:europe-west1:pst");
+$dbpass = 'MotDePasse'; 
+$dbhost = 'IpDuServeur'; 
+$connect = new mysqli($servername, $dbuser, $dbpass, $dbname, $port, "LienDuServeur");
 
 if(!$connect)
 {
