@@ -10,8 +10,3 @@ Conseille pour la suite :
 	Base de données :
 
 		Ce diriger vers une base de données FireBase pour pouvoir mettre en place des notifications sur mobile.
-
-Contact en cas d'aide :
-
-	email : gernath@et.esiea.fr
-	Discord : Adrye#0001
