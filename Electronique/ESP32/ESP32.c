@@ -4,25 +4,24 @@
 #include "nRF24L01.h"
 #include "RF24.h"
 
-RF24 radio(4, 5);
+RF24 radio(4, 5); //Pin MESSO et MISSO
 const byte address[6] = "node1";
 
-const char* ssid     = "Bbox-58031F45";
-const char* password = "DDD2E2FC6EF5F691454F629215A9DE";
-const char* host = "35.187.127.17";
+const char* ssid     = "/*Nom de la WIFI*/";
+const char* password = "/*Mdp de la WIFI*/";
+const char* host = "/*Addresse ip*/";
 
 void setup()
 {
+  //Initialisation du module radio
   Serial.begin(115200);
   Serial.println("Starting...");
   radio.begin();
-  radio.setPALevel(RF24_PA_MIN);
-  radio.openReadingPipe(0, address);
-  radio.startListening();
+  radio.setPALevel(RF24_PA_MIN); //Mode de consomation faible
+  radio.openReadingPipe(0, address); //Pin de reception 0
+  radio.startListening(); //Mode transmetteur
 
-  // We start by connecting to a WiFi network
-  Serial.println();
-  Serial.println();
+  // Connexion à la WIFI
   Serial.print("Connecting to ");
   Serial.println(ssid);
   WiFi.begin(ssid, password);
@@ -33,7 +32,6 @@ void setup()
       Serial.print(".");
   }
 
-  Serial.println("");
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
@@ -41,23 +39,26 @@ void setup()
 
 void loop()
 { 
+  //Si une donnée reçus par la radio alors
   if (radio.available()) 
   {
     char numSerie[32];
     while (radio.available())
     {
+      //On lit la donnée reçus
       int len = radio.getDynamicPayloadSize();
       radio.read(&numSerie, len);
-      //Serial.println(numSerie);
     }
     
     HTTPClient http;
 
     WiFiClient client;
-
-    http.begin(String("https://nimble-lead-277612.ew.r.appspot.com/?numSerie=") + numSerie);
-    int httpCode = http.GET();
-    http.end();
+    //On entre dans la BDD l'activation d'un capteur
+    http.begin(String("https://nimble-lead-277612.ew.r.appspot.com/?id=0&numSerie=") + numSerie); //On prépare la connexion
+    int httpCode = http.GET(); //On execute
+    http.end(); //On ferme la connexion
 
   }
 }
+
+

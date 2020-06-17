@@ -5,27 +5,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Capteur">
+    tools:context=".Capteur"
+    android:background="@android:color/transparent">
 
-    <Button
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="back"
-        android:id="@+id/button"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycle_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="5dp"
-        android:scrollbars="vertical"
-        android:layout_marginBottom="100dp"/>
-    <ImageButton
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:src="@drawable/ic_delete"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/delete"
-        />
+        android:id="@id/menu">
+        <include
+            layout="@layout/capteur_menu"
+            android:id="@+id/menu"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/liste"
+        android:visibility="gone">
+        <ImageButton
+            android:id="@+id/buttonList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_retour"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="@android:color/secondary_text_light"
+            android:layout_toEndOf="@+id/buttonList"
+            android:paddingTop="2dp"
+            android:id="@+id/ID_retourTextList"
+            android:text="Retour"/>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+            <include
+                layout="@layout/liste_activity_capteur"
+                />
+        </RelativeLayout>
 
+    </RelativeLayout>
 </RelativeLayout>

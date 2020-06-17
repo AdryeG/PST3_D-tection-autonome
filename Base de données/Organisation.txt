@@ -1,0 +1,15 @@
+Table : users
+	CHAR[255]	username
+	CHAR[255]	email
+	CHAR[255]	password
+				ID_user
+Table : capteur_info
+	INT			numSerie
+	TIME		time
+				id_info
+Table : capteur_list
+	INT			typeCapteur
+	INT			numSerie
+	CHAR[255]	nomCapteur
+	BOOL		notification
+				ID_list

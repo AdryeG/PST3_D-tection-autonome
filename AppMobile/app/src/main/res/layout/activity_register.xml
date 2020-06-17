@@ -4,28 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/transparent"
     tools:context=".RegisterActivity">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/bar_layout"/>
+    <ImageButton
+        android:id="@+id/ID_retour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_retour"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textColor="@android:color/secondary_text_light"
+        android:layout_toEndOf="@+id/ID_retour"
+        android:paddingTop="2dp"
+        android:id="@+id/ID_retourText"
+        android:text="Retour"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_below="@id/toolbar">
-
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Register"
             android:gravity="center"
-            android:textSize="20dp"
+            android:textSize="30dp"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"
-            android:layout_marginTop="20dp"/>
+            android:textColor="@android:color/black"
+            android:layout_marginTop="150dp"/>
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:layout_width="match_parent"
@@ -65,14 +76,16 @@
             android:textColor="@color/colorPrimaryDark"/>
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:text="Register"
             android:textAllCaps="false"
             android:id="@+id/register"
-            android:background="@color/colorPrimaryDark"
-            android:textColor="@android:color/white"
-            android:layout_marginTop="20dp"/>
+            android:background="@drawable/button_rounded"
+            android:textColor="@android:color/widget_edittext_dark"
+            android:layout_marginTop="20dp"
+            android:textSize="20dp"
+            android:layout_gravity="center"/>
 
 
     </LinearLayout>

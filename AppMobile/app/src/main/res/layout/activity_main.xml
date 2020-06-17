@@ -5,21 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@android:color/transparent"
     tools:context=".MainActivity">
-
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/bar_layout"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login"
         android:gravity="center"
-        android:textSize="20dp"
+        android:textSize="30dp"
         android:textStyle="bold"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_marginTop="20dp"/>
+        android:textColor="@android:color/black"
+        android:layout_marginTop="150dp"/>
 
 
     <com.rengwuxian.materialedittext.MaterialEditText
@@ -32,7 +29,7 @@
         android:layout_marginLeft="20dp"
         android:id="@+id/email"
         android:padding="5dp"
-        android:textColor="@color/colorPrimaryDark"/>
+        android:textColor="@android:color/black"/>
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:layout_width="match_parent"
@@ -45,7 +42,7 @@
         android:layout_marginLeft="20dp"
         android:id="@+id/password"
         android:padding="5dp"
-        android:textColor="@color/colorPrimaryDark"/>
+        android:textColor="@android:color/black"/>
 
 
     <CheckBox
@@ -53,31 +50,35 @@
         android:layout_height="wrap_content"
         android:text="Keep Me Logged In"
         android:id="@+id/checkbox"
-        android:textColor="@color/colorPrimaryDark"
-        android:buttonTint="@color/colorPrimaryDark"
+        android:textColor="@android:color/black"
+        android:buttonTint="@android:color/black"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"/>
 
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="Login"
         android:textAllCaps="false"
         android:id="@+id/login"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@android:color/white"
+        android:background="@drawable/button_rounded"
+        android:textColor="@android:color/widget_edittext_dark"
+        android:layout_gravity="center"
+        android:textSize="20dp"
         android:layout_marginTop="20dp"/>
 
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="20dp"
         android:text="Register"
         android:textAllCaps="false"
         android:id="@+id/register"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@android:color/white"
+        android:background="@drawable/button_rounded"
+        android:textColor="@android:color/widget_edittext_dark"
         android:layout_marginTop="20dp"/>
 
 

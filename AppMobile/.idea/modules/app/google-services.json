@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1047338389589",
+    "firebase_url": "https://pst3appmobile.firebaseio.com",
+    "project_id": "pst3appmobile",
+    "storage_bucket": "pst3appmobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1047338389589:android:3003fc11fcb03b399f04dc",
+        "android_client_info": {
+          "package_name": "com.example.pst3_appmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1047338389589-k522og427a31a0upsjl5inurhji6steh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pst3_appmobile",
+            "certificate_hash": "cf999923c8f4a704363d3cd5f320af16f359c8ad"
+          }
+        },
+        {
+          "client_id": "1047338389589-sdbut7go2s3mne91k0t9pp79ckt1bop6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALCguBmU-Uo2I_e0nqPFzpGhM9_DiVEhA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1047338389589-sdbut7go2s3mne91k0t9pp79ckt1bop6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

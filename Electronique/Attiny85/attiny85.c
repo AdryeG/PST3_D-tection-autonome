@@ -9,10 +9,8 @@ const int powerLatch = 4;
 
 RF24 radio(CE_PIN, CSN_PIN);
 
-//address through which two modules communicate.
+//Addresse sur le quel les deux modules radio communique
 const byte address[6] = "node1";
-
-unsigned long payload = 0;
 
 void setup() {
 
@@ -21,33 +19,30 @@ void setup() {
 
   // Garde le circuit allumé
   digitalWrite(powerLatch, HIGH);
- 
+
+ //Initialisation du module radio 
   BegeningTransmision();
-  
-  // Remettre le cicuit en off
-  digitalWrite(powerLatch, LOW);
   
 }
 
 void BegeningTransmision(){
-  radio.begin(); // Start up the radio
+  radio.begin(); // Allume la radio
   
-  radio.openWritingPipe(address); // Write to device address
-  radio.stopListening();
+  radio.openWritingPipe(address); // Mode emmetteur
 }
 
 void loop(void){
   bool send = false;
-  const char text[] = "124578";
-  while (send == false)
+  const char text[] = "/*Numéro de série*/";
+  while (send == false) //S'assure que le message c'est bien envoyé
   {
-    if (!radio.write(&text , sizeof(text)))
+    if (!radio.write(&text , sizeof(text))) //Envoie le message
     {
       send = false;
     }
     else
       send = true;
   }
-  digitalWrite(powerLatch, LOW);
+  digitalWrite(powerLatch, LOW); //Permet d'éteindre le circuit
   exit(0);
 }

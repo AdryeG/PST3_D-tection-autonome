@@ -2,12 +2,15 @@ package com.example.pst3_appmobile;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Button;
 
@@ -27,6 +30,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     MaterialEditText username, email, password;
     Button register;
+    ImageButton btnreturn;
+    TextView txtreturn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,8 @@ public class RegisterActivity extends AppCompatActivity {
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         register = findViewById(R.id.register);
+        btnreturn = findViewById(R.id.ID_retour);
+        txtreturn = findViewById(R.id.ID_retourText);
 
         register.setOnClickListener(new View.OnClickListener()
         {
@@ -54,6 +61,19 @@ public class RegisterActivity extends AppCompatActivity {
                 {
                     registerNewAccount(txtUsername, txtEmail, txtPassword);
                 }
+            }
+        });
+
+        btnreturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+            }
+        });
+        txtreturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
             }
         });
 

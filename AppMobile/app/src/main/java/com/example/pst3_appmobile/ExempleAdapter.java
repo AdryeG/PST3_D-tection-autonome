@@ -39,6 +39,8 @@ public class ExempleAdapter extends RecyclerView.Adapter<ExempleAdapter.ExampleV
         String Text1 = currentItem.getText1();
         String Text2 = currentItem.getText2();
         int icon = currentItem.getImageResource();
+        String notif = currentItem.getNotif();
+
         holder.mTextView1.setText(Text1);
         holder.mTextView2.setText(Text2);
         holder.mImageView.setImageResource(currentItem.getImageResource());

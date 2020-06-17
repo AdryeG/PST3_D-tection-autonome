@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:padding="8dp"
-    android:background="@android:color/holo_orange_dark"
+    android:background="@android:color/transparent"
     tools:ignore="ExtraText">
 
 

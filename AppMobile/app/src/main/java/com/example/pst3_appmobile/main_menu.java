@@ -1,27 +1,22 @@
 package com.example.pst3_appmobile;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -29,7 +24,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -38,17 +32,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import okhttp3.OkHttpClient;
 
 public class main_menu extends AppCompatActivity implements ExempleAdapter.OnItemClickListener {
 
     public static final String NumSerieCapteur = "Text2";
+    public static final String NomCapteurextra = "Text1";
+    public static final String Notif = "notification";
 
     private ArrayList<ExempleItem> mExempleList;
 
@@ -290,16 +282,17 @@ public class main_menu extends AppCompatActivity implements ExempleAdapter.OnIte
                                 String Text1 = hit.getString("nomCapteur");
                                 String Text2 = hit.getString("numSerie");
                                 int icon = hit.getInt("typeCapteur");
+                                String notif = hit.getString ("notification");
                                 if (icon == 0)
-                                    mExempleList.add(0, new ExempleItem(R.drawable.ic_door, Text1, Text2));
+                                    mExempleList.add(0, new ExempleItem(R.drawable.ic_door, Text1, Text2, notif));
                                 if (icon == 1)
-                                    mExempleList.add(0, new ExempleItem(R.drawable.ic_tmp, Text1, Text2));
+                                    mExempleList.add(0, new ExempleItem(R.drawable.ic_tmp, Text1, Text2, notif));
                                 if (icon == 2)
-                                    mExempleList.add(0, new ExempleItem(R.drawable.ic_humidity, Text1, Text2));
+                                    mExempleList.add(0, new ExempleItem(R.drawable.ic_humidity, Text1, Text2, notif));
                                 if (icon == 3)
-                                    mExempleList.add(0, new ExempleItem(R.drawable.ic_motion_sensor, Text1, Text2));
+                                    mExempleList.add(0, new ExempleItem(R.drawable.ic_motion_sensor, Text1, Text2, notif));
                                 if (icon == 4)
-                                    mExempleList.add(0, new ExempleItem(R.drawable.ic_lumiere, Text1, Text2));
+                                    mExempleList.add(0, new ExempleItem(R.drawable.ic_lumiere, Text1, Text2, notif));
                             }
                             mAdapter = new ExempleAdapter(main_menu.this, mExempleList);
                             mRecyclerView.setAdapter(mAdapter);
@@ -375,6 +368,8 @@ public class main_menu extends AppCompatActivity implements ExempleAdapter.OnIte
         ExempleItem clickItem = mExempleList.get(position);
 
         detailIntent.putExtra(NumSerieCapteur, clickItem.getText2());
+        detailIntent.putExtra(NomCapteurextra, clickItem.getText1());
+        detailIntent.putExtra(Notif, clickItem.getNotif());
         startActivity(detailIntent);
     }
 

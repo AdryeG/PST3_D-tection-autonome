@@ -26,10 +26,21 @@ if ($id == 0)
 {
   $numSerie = $_GET['numSerie'];
 
-  if($numSerie != 0)
+
+  $date = date_create();
+
+  $req_date = $connect->query("SELECT timestamp FROM capteur_info WHERE numSerie = ".$numSerie." ORDER BY id_info DESC LIMIT 1");
+  $req_date = $req_date->fetch_row();
+  $req_date = $req_date[0];
+
+  /*echo "1:";
+  echo (date_timestamp_get($date) + 60);
+  echo "2:";
+  echo $req_date;*/
+
+  if ((date_timestamp_get($date) - 60) > $req_date)
   {
-  
-    $req = $connect->prepare("INSERT INTO capteur_info (numSerie) VALUES (".$numSerie.")");
+    $req = $connect->prepare("INSERT INTO capteur_info (numSerie, timestamp) VALUES (".$numSerie.", ".date_timestamp_get($date).")");
     $req->execute();
 
     if ($req)
@@ -38,6 +49,8 @@ if ($id == 0)
     else
       echo "Marche po";
   }
+  else
+    echo "Trop de requête"; //Permet de ne pas spamer la BDD
 }
 /*Création de compte*/
 if ($id == 1)
@@ -102,7 +115,7 @@ if ($id == 2)
 if ($id == 3)
 {
 
-  $req = "SELECT typeCapteur, numSerie, nomCapteur FROM capteur_list";
+  $req = "SELECT typeCapteur, numSerie, nomCapteur, notification FROM capteur_list";
 
   $result = mysqli_query($connect, $req);
 
@@ -158,6 +171,7 @@ if ($id == 5)
   echo json_encode($json_array);
   echo "}";
 }
+/*Supprimer un capteur*/
 if ($id == 6)
 {
   $numSerie = $_GET['numSerie'];
@@ -174,5 +188,29 @@ if ($id == 6)
   }
   else
     echo "Capteur deja supprime";
+}
+/*Activer/Désactiver les notifications*/
+if ($id == 7)
+{
+  $numSerie = $_GET['numSerie'];
+  $numSerie = trim($numSerie, '"');
+  $numSerie = trim($numSerie, "'");
+
+  $notif = $connect->query("SELECT notification FROM capteur_list WHERE numSerie = '".$numSerie."'");
+  $result = $notif->fetch_row();
+  $mode = $result[0];
+
+  if ($mode == "0")
+  {
+    $reqON = $connect->prepare("UPDATE capteur_list SET notification = 1 WHERE numSerie = '".$numSerie."'");
+    $reqON->execute();    
+  }
+  elseif ($mode == "1") 
+  {
+    $reqOFF = $connect->prepare("UPDATE capteur_list SET notification = 0 WHERE numSerie = '".$numSerie."'");
+    $reqOFF->execute();
+  }
+  else
+    echo "echec";
 }
 ?>
